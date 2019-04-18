@@ -9,10 +9,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
-// app.get('/', (req, res) => {
-//   res.send('yooooo');
-// })
-
 app.use((req, res, next) => {
   const timestamp = new Date();
   console.log(`serving a ${req.method} request to url ${req.url} at ${timestamp.getHours()}:${timestamp.getMinutes()}:${timestamp.getSeconds()}. Body: `, req.body);
