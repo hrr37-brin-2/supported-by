@@ -1,3 +1,13 @@
+### CRUD
+
+|intention                  | request type  | request url       | request body             | side effect         | response body
+|---------------------------|:-------------:|-------------------|--------------------------|---------------------|----------------------------------------------|
+| obtain list of user comment objects for given album id | GET           | support/:id       | none             | none                | `[{id: 2, username: "Adrian.Jerde20", comment: "lorem ipsum..."}, {id: 25, username: "Electa11", comment: "ipsum lorem..."}]` |
+| add new comment for album by id | POST          | support/:id    | `{username: "DaleCooper", comment: "fine coffee", id: 4}`| creates new entry in database | `POST successful: {username: "DaleCooper", comment: "fine coffee", id: 5}` |
+| modify one comment | PUT           | support/:id       | `{username: "DaleCooper", comment: "decent coffee", id: 4}` | modifies db entry for comment associated with given album/user/comment id | `PUT successful: {username: "DaleCooper", comment: "decent coffee", id: 4}` |
+| delete single comment by id | DELETE        | support/:id       | `{id: 25, username: "Electa11", comment: "ipsum lorem..."}` | deletes db entry for comment associated with given album/user/comment id | `DELETE successful: {id: 25, username: "Electa11", comment: "ipsum lorem..."}` |
+
+
 # Supported by module
 
 Displays user album reviews and avatars

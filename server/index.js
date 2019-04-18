@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   const timestamp = new Date();
-  console.log(`serving a ${req.method} request to url ${req.url} at ${timestamp.getHours()}:${timestamp.getMinutes()}:${timestamp.getSeconds}. Body: `, req.body);
+  console.log(`serving a ${req.method} request to url ${req.url} at ${timestamp.getHours()}:${timestamp.getMinutes()}:${timestamp.getSeconds()}. Body: `, req.body);
 
   next();
 })
@@ -24,18 +24,18 @@ app.use('/', express.static(__dirname + '/../client/dist/'))
 app.use('/:id', express.static(__dirname + '/../client/dist'));
 
 
-app.get('/api/users/:id', (req, res) => {
-  let id = req.params.id;
-  User.getUser(id, (err, user) => {
-    if(err) {
-      console.log(err);
-    } else {
-      res.json(user);
-    }
-  });
-});
+// app.get('/api/users/:id', (req, res) => {
+//   let id = req.params.id;
+//   User.getUser(id, (err, user) => {
+//     if(err) {
+//       console.log(err);
+//     } else {
+//       res.json(user);
+//     }
+//   });
+// });
 
-app.get('/support/:id', (req, res) => { //returns
+app.get('/support/:id', (req, res) => {
   let albumId = req.params.id;
 
   User.getUsersForAlbum(albumId, (err, albumUsers) => {
@@ -46,5 +46,29 @@ app.get('/support/:id', (req, res) => { //returns
     }
   });
 });
+
+app.post('/support/:id', (req, res) => {
+  let albumId = req.params.id;
+  //TODO: implement db access
+
+  res.send(`POST request received for id ${albumId}, thanks`);
+})
+
+app.put('/support/:id', (req, res) => {
+  let albumId = req.params.id;
+
+  //TODO: implement db access
+
+  res.send(`PUT request received for id ${albumId}, thanks`);
+})
+
+app.delete('/support/:id', (req, res) => {
+  let albumId = req.params.id;
+
+  //TODO: implement db access
+
+  res.send(`DELETE request received for id ${albumId}, thanks`)
+})
+
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
