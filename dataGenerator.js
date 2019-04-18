@@ -30,11 +30,13 @@ for (let i = 0; i <= entryQty; i++) {
   }
 
   dataList.push(albumData);
-}
 
-fs.writeFile('testData.json', JSON.stringify(dataList), (err) => {
-  if (err) {
-    console.log(err)
+  if (!fs.existsSync('mock_data.json')) {
+    fs.writeFileSync('mock_data.json', `[ ${JSON.stringify(albumData)}]`)
   }
-  console.log('saved data!');
-})
+  let currData = fs.readFileSync('mock_data.json');
+  let parsedData = JSON.parse(currData);
+  parsedData.push(albumData);
+
+  fs.writeFileSync('mock_data.json', JSON.stringify(parsedData))
+}
