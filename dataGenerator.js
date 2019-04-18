@@ -1,12 +1,18 @@
 const faker = require('faker');
 const fs = require('fs');
 
-const dataEntry = {};
 
-dataEntry.name = faker.name.firstName();
-dataEntry.descriptor = faker.hacker.adjective() + faker.hacker.noun();
+const dataList = [];
 
-fs.writeFile('testData.json', JSON.stringify(dataEntry), (err) => {
+for (let i = 0; i < 10000; i++) {
+  let dataEntry = {};
+  dataEntry.name = faker.name.firstName();
+  dataEntry.descriptor = faker.hacker.adjective() + faker.hacker.noun();
+  dataList.push(dataEntry);
+}
+
+
+fs.writeFile('testData.json', JSON.stringify(dataList), (err) => {
   if (err) {
     console.log(err)
   }
