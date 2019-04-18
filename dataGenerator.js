@@ -21,7 +21,7 @@ for (let i = 0; i <= entryQty; i++) {
       count: 2,
       units: 'sentences',
       sentenceLowerBound: 3,
-      sentenceUpperBound: 8,
+      sentenceUpperBound: 5,
       format: 'plain'
     })
 
