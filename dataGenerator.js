@@ -1,5 +1,6 @@
 const faker = require('faker');
 const fs = require('fs');
+const bson = require('bson');
 const loremHipsum = require('lorem-hipsum');
 
 const dataList = [];
@@ -30,7 +31,6 @@ for (let i = 0; i <= entryQty; i++) {
 
   dataList.push(albumData);
 }
-
 
 fs.writeFile('testData.json', JSON.stringify(dataList), (err) => {
   if (err) {
