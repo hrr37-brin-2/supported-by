@@ -47,10 +47,11 @@ app.get('/support/:id', (req, res) => {
   });
 });
 
-app.post('/support/', (req, res) => {
+app.post('/support/:id', (req, res) => {
+  let albumId = req.params.id;
   //TODO: implement db access
 
-  res.send('POST request received, thanks');
+  res.send(`POST request received for id ${albumId}, thanks`);
 })
 
 app.put('/support/:id', (req, res) => {
