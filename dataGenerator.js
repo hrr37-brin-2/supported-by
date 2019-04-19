@@ -37,28 +37,29 @@ for (let i = 0; i <= entryQty; i++) {
     let dataBatch = dataList.slice();
     dataList = [];
     fileNameSerial++;
+    let notifySerial = fileNameSerial;
 
     fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch), (err) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(`saved file ${fileNameSerial}`);
+        console.log(`saved file ${notifySerial}`);
       }
     })
   } else if (i == entryQty) {
     fileNameSerial++;
+    let notifySerial = fileNameSerial;
+
     fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList), (err) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(`saved file ${fileNameSerial}`);
+        console.log(`saved file ${notifySerial}`);
       }
     });
   }
 }
 
-
-
 // iterate 'qty' times
 // when iterator == threshold (provided via arg), save file and increment filename counter
-// when iterator == qty, save file (handles final batch)
+// else when iterator == qty, save file (handles final batch)
