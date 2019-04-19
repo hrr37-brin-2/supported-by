@@ -8,7 +8,7 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "gen-data": "node --max-old-space-size=12288 dataGenerator.js",
+    "gen-data": "node --max-old-space-size=8192 dataGenerator.js",
     "react-dev": "webpack -d --watch",
     "seed": "mongoimport --db bandland --collection users --file userData.json --jsonArray",
     "start": "node server/index.js",
