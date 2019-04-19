@@ -6,7 +6,7 @@ const loremHipsum = require('lorem-hipsum');
 let dataList = [];
 const entryQty = process.argv[2];
 const entriesPerFile = process.argv[3];
-let fileNameSerial = 1;
+let fileNameSerial = 0;
 
 for (let i = 0; i <= entryQty; i++) {
   let albumData = {};
@@ -36,15 +36,17 @@ for (let i = 0; i <= entryQty; i++) {
   if (i % entriesPerFile === 0) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
     let dataBatch = dataList.slice();
     dataList = [];
+    fileNameSerial++;
+
     fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch), (err) => {
       if (err) {
         console.log(err);
       } else {
         console.log(`saved file ${fileNameSerial}`);
-        fileNameSerial++;
       }
     })
   } else if (i == entryQty) {
+    fileNameSerial++;
     fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList), (err) => {
       if (err) {
         console.log(err);
