@@ -42,6 +42,7 @@ for (let i = 0; i <= entryQty; i++) {
     dataList = [];
     fileNameSerial++;
     let notifySerial = fileNameSerial;
+    console.log(`writing file ${notifySerial}...`)
 
     fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch), (err) => {
       if (err) {
@@ -53,6 +54,7 @@ for (let i = 0; i <= entryQty; i++) {
   } else if (i == entryQty) {
     fileNameSerial++;
     let notifySerial = fileNameSerial;
+    console.log(`writing file ${notifySerial}...`);
 
     fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList), (err) => {
       if (err) {
