@@ -39,8 +39,6 @@ for (let i = 0; i <= entryQty; i++) {
   dataList.push(albumData);
 
   if (i !==0 && i % entriesPerFile === 0) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
-    let dataBatch = dataList.slice();
-    dataList = [];
     fileNameSerial++;
     let notifySerial = fileNameSerial;
     console.log(`writing file ${notifySerial}...`)
@@ -52,8 +50,10 @@ for (let i = 0; i <= entryQty; i++) {
     //     console.log(`saved file ${notifySerial}`);
     //   }
     // })
-    fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch));
+    fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
+
     console.log(`saved file ${notifySerial}`);
+    dataList = [];
   } else if (i == entryQty) {
     fileNameSerial++;
     let notifySerial = fileNameSerial;
