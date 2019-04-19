@@ -7,7 +7,6 @@
 | modify one comment | PUT           | support/:id       | `{username: "DaleCooper", comment: "decent coffee", id: 4}` | modifies db entry for comment associated with given album/user/comment id | `PUT successful: {username: "DaleCooper", comment: "decent coffee", id: 4}` |
 | delete single comment by id | DELETE        | support/:id       | `{id: 25, username: "Electa11", comment: "ipsum lorem..."}` | deletes db entry for comment associated with given album/user/comment id | `DELETE successful: {id: 25, username: "Electa11", comment: "ipsum lorem..."}` |
 
-
 # Supported by module
 
 Displays user album reviews and avatars
@@ -25,9 +24,7 @@ Displays user album reviews and avatars
 
 ## Usage
 
-- Install mongoDB using homebrew before using the database seeding script
-- Run `brew services start mongodb-community@4.0` and then `mongo` in the command line
-- Then use the seed script located in the package.json
+`npm run gen-data [num of entries] [entries per file]` will generate the specified number of entries and store in .json files, batching entries in separate files at quantity specified. Per-file quantities > 100k are not recommended. Calling `npm run gen-data` defaults to 100k entries with 10k entries per file.
 
 ## Requirements
 

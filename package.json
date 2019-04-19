@@ -8,19 +8,24 @@
     "node": ">=6.13.0"
   },
   "scripts": {
+    "gen-data": "node --max-old-space-size=8192 dataGenerator.js",
     "react-dev": "webpack -d --watch",
     "seed": "mongoimport --db bandland --collection users --file userData.json --jsonArray",
-    "start": "nodemon server/index.js",
+    "start": "node server/index.js",
     "test": "jest --verbose",
     "test:coverage": "jest --verbose --coverage"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
+    "bson": "^4.0.2",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "faker": "^4.1.0",
     "grunt": "^1.0.4",
     "jquery": "^3.3.1",
+    "lorem-hipsum": "^0.1.7",
     "mongoose": "^5.4.20",
+    "pg": "^7.10.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "webpack-dev": "^1.1.1"
