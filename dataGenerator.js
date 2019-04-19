@@ -44,13 +44,15 @@ for (let i = 0; i <= entryQty; i++) {
     let notifySerial = fileNameSerial;
     console.log(`writing file ${notifySerial}...`)
 
-    fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch), (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(`saved file ${notifySerial}`);
-      }
-    })
+    // fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch), (err) => {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     console.log(`saved file ${notifySerial}`);
+    //   }
+    // })
+    fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch));
+    console.log(`saved file ${notifySerial}`);
   } else if (i == entryQty) {
     fileNameSerial++;
     let notifySerial = fileNameSerial;
