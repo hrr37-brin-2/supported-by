@@ -33,7 +33,7 @@ for (let i = 0; i <= entryQty; i++) {
 
   dataList.push(albumData);
 
-  if (i % entriesPerFile === 0) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
+  if (i !==0 && i % entriesPerFile === 0) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
     let dataBatch = dataList.slice();
     dataList = [];
     fileNameSerial++;
