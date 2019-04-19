@@ -3,8 +3,10 @@ const fs = require('fs');
 const bson = require('bson');
 const loremHipsum = require('lorem-hipsum');
 
-const dataList = [];
+let dataList = [];
 const entryQty = process.argv[2];
+const entriesPerFile = process.argv[3];
+let fileNameSerial = 1;
 
 for (let i = 0; i <= entryQty; i++) {
   let albumData = {};
@@ -30,11 +32,31 @@ for (let i = 0; i <= entryQty; i++) {
   }
 
   dataList.push(albumData);
+
+  if (i % entriesPerFile === 0) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
+    let dataBatch = dataList.slice();
+    dataList = [];
+    fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch), (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(`saved file ${fileNameSerial}`);
+        fileNameSerial++;
+      }
+    })
+  } else if (i == entryQty) {
+    fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList), (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(`saved file ${fileNameSerial}`);
+      }
+    });
+  }
 }
 
-fs.writeFile('testData.json', JSON.stringify(dataList), (err) => {
-  if (err) {
-    console.log(err)
-  }
-  console.log('saved data!');
-})
+
+
+// iterate 'qty' times
+// when iterator == threshold (provided via arg), save file and increment filename counter
+// when iterator == qty, save file (handles final batch)
