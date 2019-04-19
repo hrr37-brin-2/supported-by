@@ -3,8 +3,14 @@ const fs = require('fs');
 const bson = require('bson');
 const loremHipsum = require('lorem-hipsum');
 
-const dataList = [];
-const entryQty = process.argv[2];
+let dataList = [];
+
+//number of entries to generate -- defaults to 100k if not provided as arg
+const entryQty = process.argv[2] || 100000;
+// number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
+const entriesPerFile = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
+
+let fileNameSerial = 0;
 
 for (let i = 0; i <= entryQty; i++) {
   let albumData = {};
@@ -30,11 +36,34 @@ for (let i = 0; i <= entryQty; i++) {
   }
 
   dataList.push(albumData);
+
+  if (i !==0 && i % entriesPerFile === 0) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
+    let dataBatch = dataList.slice();
+    dataList = [];
+    fileNameSerial++;
+    let notifySerial = fileNameSerial;
+
+    fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch), (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(`saved file ${notifySerial}`);
+      }
+    })
+  } else if (i == entryQty) {
+    fileNameSerial++;
+    let notifySerial = fileNameSerial;
+
+    fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList), (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(`saved file ${notifySerial}`);
+      }
+    });
+  }
 }
 
-fs.writeFile('testData.json', JSON.stringify(dataList), (err) => {
-  if (err) {
-    console.log(err)
-  }
-  console.log('saved data!');
-})
+// iterate 'qty' times
+// when iterator == threshold (provided via arg), save file and increment filename counter
+// else when iterator == qty, save file (handles final batch)
