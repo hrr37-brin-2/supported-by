@@ -4,8 +4,12 @@ const bson = require('bson');
 const loremHipsum = require('lorem-hipsum');
 
 let dataList = [];
-const entryQty = process.argv[2];
-const entriesPerFile = process.argv[3];
+
+//number of entries to generate -- defaults to 100k if not provided as arg
+const entryQty = process.argv[2] || 100000;
+// number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
+const entriesPerFile = process.argv[3] || entryQty >= 100000 ? 10000 : Math.floor(entryQty/10);
+
 let fileNameSerial = 0;
 
 for (let i = 0; i <= entryQty; i++) {
