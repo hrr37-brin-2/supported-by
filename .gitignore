@@ -4,4 +4,3 @@ coverage
 .aws.json
 jankData.json
 testData.json
-data/
