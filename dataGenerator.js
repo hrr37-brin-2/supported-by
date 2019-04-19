@@ -1,7 +1,7 @@
 const faker = require('faker');
 const fs = require('fs');
-const bson = require('bson');
-const loremHipsum = require('lorem-hipsum');
+// const bson = require('bson');
+// const loremHipsum = require('lorem-hipsum');
 
 let dataList = [];
 
@@ -24,13 +24,14 @@ for (let i = 0; i <= entryQty; i++) {
     let comment = {};
     comment.username = faker.name.findName();
     comment.avatar = faker.image.cats();
-    comment.text = loremHipsum({
-      count: 2,
-      units: 'sentences',
-      sentenceLowerBound: 3,
-      sentenceUpperBound: 8,
-      format: 'plain'
-    })
+    // comment.text = loremHipsum({
+    //   count: 2,
+    //   units: 'sentences',
+    //   sentenceLowerBound: 3,
+    //   sentenceUpperBound: 8,
+    //   format: 'plain'
+    // })
+    comment.text = "With hard driving guitars and pounding drums (two kits at the band’s live shows) backing Hull’s pain-laden narratives, Manchester Orchestra has found the “Golden Ticket” into the mainstream.";
 
     albumData.comments.push(comment);
   }
