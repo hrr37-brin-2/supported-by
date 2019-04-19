@@ -24,7 +24,7 @@ Displays user album reviews and avatars
 
 ## Usage
 
-`npm run gen-data [num of entries]` will generate a .json file with the specified number of entries.
+`npm run gen-data [num of entries] [entries per file]` will generate the specified number of entries and store in .json files, batching entries in separate files at quantity specified. Per-file quantities > 100k are not recommended. Calling `npm run gen-data` defaults to 100k entries with 10k entries per file.
 
 ## Requirements
 
