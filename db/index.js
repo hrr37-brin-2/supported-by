@@ -5,21 +5,6 @@ const pool = new pg.Pool({
   database: 'testdb'
 });
 
-// module.exports.insertData = (dataArr, callback) => {
-
-//   for (let i = 0; i < dataArr.length; i++) {
-//     let jsonObj = JSON.stringify(dataArr[i]);
-
-//     const testLoadQuery = 'INSERT INTO testtable(data) VALUES ($1)';
-
-//     pool.query(testLoadQuery, [jsonObj], (err, results) => {
-//       if (err) {
-//         callback(err, jsonObj);
-//       }
-//     })
-//   }
-// }
-
 module.exports.insertData = async (dataArr) => {
   const valuesArray = [];
   const paramsArray = [];
@@ -39,5 +24,3 @@ module.exports.insertData = async (dataArr) => {
 
   return response;
 }
-
-module.exports.pool = pool;

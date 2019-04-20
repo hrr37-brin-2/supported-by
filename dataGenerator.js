@@ -5,6 +5,26 @@ const pgdb = require('./db/index.js');
 
 console.time('duration data gen and seed');
 
+//======= OPTION SETUP =======//
+//number of entries to generate -- defaults to 100k if not provided as arg
+const entryQty = process.argv[2] || 100000;
+
+// number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
+let entriesPerFile = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
+
+// where to save data -- database or file system
+let saveDataTo = 'pg';
+if (process.argv[4] == 'fs') {
+  saveDataTo = 'fs';
+} else if (process.argv[4] == 'cass') {
+  saveDataTo = 'cass';
+}
+
+// handle large data sets for postgres, where query bound to params list caps out at ~30k params
+if (saveDataTo == 'pg' && entryQty > 100000) {
+  entriesPerFile = 30000;
+}
+//======= COMMENT BUILDER HELPER FUNCTION =======//
 const makeComments = () => {
   const comments = [];
   const commentCount = Math.floor(Math.random() * 10);
@@ -25,11 +45,8 @@ const makeComments = () => {
   return comments;
 }
 
+//======= MAIN DATA GENERATOR =======//
 const generateData = async () => {
-  //number of entries to generate -- defaults to 100k if not provided as arg
-  const entryQty = process.argv[2] || 100000;
-  // number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
-  const entriesPerFile = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
   let dataList = [];
   let fileNameSerial = 0;
 
@@ -47,9 +64,14 @@ const generateData = async () => {
 
         console.log(`writing batch ${notifySerial}...`)
 
-        const response = await pgdb.insertData(dataList);
-
-        console.log(`batch ${notifySerial} complete! Rows written: `, response);
+        if (saveDataTo == 'pg') {
+          const response = await pgdb.insertData(dataList);
+          console.log(`batch ${notifySerial} complete! Rows written: `, response);
+        } else if (saveDataTo == 'fs') {
+          fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
+        } else if (saveDataTo == 'cass') {
+          //TODO: write cassandra db insert
+        }
 
         dataList = [];
       }
