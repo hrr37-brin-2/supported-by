@@ -24,14 +24,13 @@ for (let i = 0; i <= entryQty; i++) {
     let comment = {};
     comment.username = faker.name.findName();
     comment.avatar = faker.image.cats();
-    // comment.text = loremHipsum({
-    //   count: 2,
-    //   units: 'sentences',
-    //   sentenceLowerBound: 3,
-    //   sentenceUpperBound: 8,
-    //   format: 'plain'
-    // })
-    comment.text = "With hard driving guitars and pounding drums (two kits at the band’s live shows) backing Hull’s pain-laden narratives, Manchester Orchestra has found the “Golden Ticket” into the mainstream.";
+    comment.text = loremHipsum({
+      count: 2,
+      units: 'sentences',
+      sentenceLowerBound: 3,
+      sentenceUpperBound: 8,
+      format: 'plain'
+    })
 
     albumData.comments.push(comment);
   }
@@ -43,17 +42,11 @@ for (let i = 0; i <= entryQty; i++) {
     let notifySerial = fileNameSerial;
     console.log(`writing file ${notifySerial}...`)
 
-    // fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataBatch), (err) => {
-    //   if (err) {
-    //     console.log(err);
-    //   } else {
-    //     console.log(`saved file ${notifySerial}`);
-    //   }
-    // })
     fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
 
     console.log(`saved file ${notifySerial}`);
     dataList = [];
+
   } else if (i == entryQty) {
     fileNameSerial++;
     let notifySerial = fileNameSerial;
