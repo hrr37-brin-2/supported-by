@@ -5,14 +5,20 @@ const pool = new pg.Pool({
   database: 'testdb'
 });
 
-const query = `SELECT * FROM pasta`;
+module.exports.insertData = async (dataArr) => {
+  const valuesArray = [];
+  const paramsArray = [];
 
-pool.query(query, (err, results) => {
-  if (err) {
-    console.log(`db query error: `, err);
-  } else {
-    console.log(`db query successful! Results: `, results);
+  for (let i = 0; i < dataArr.length; i++) {
+    valuesArray.push(`($${i+1})`);
+    let jsonObj = JSON.stringify(dataArr[i]);
+    paramsArray.push(jsonObj);
   }
+  const valuesString = valuesArray.join(',  ');
+  const testLoadQuery = `INSERT INTO testtable(data) VALUES ${valuesString}`;
 
-  pool.end();
-})
+  const response = await pool.query(testLoadQuery, paramsArray)
+    .then(response => response.rowCount);
+
+  return response;
+}
