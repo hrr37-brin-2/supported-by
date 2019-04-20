@@ -60,15 +60,15 @@ const generateData = async () => {
 
       if (i !==0 && i % entriesPerBatch === 0 || i == entryQty) { // if i is a multiple of entriesPerBatch
         fileNameSerial++;
-        let notifySerial = fileNameSerial;
 
-        console.log(`writing batch ${notifySerial}...`)
+        console.log(`writing batch ${fileNameSerial}...`)
 
         if (saveDataTo == 'pg') {
           const response = await pgdb.insertData(dataList);
-          console.log(`batch ${notifySerial} complete! Rows written: `, response);
+          console.log(`batch ${fileNameSerial} complete! Rows written: `, response);
         } else if (saveDataTo == 'fs') {
           fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
+          console.log(`file ${fileNameSerial} written!`);
         } else if (saveDataTo == 'cass') {
           //TODO: write cassandra db insert
         }
