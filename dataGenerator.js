@@ -1,6 +1,7 @@
 const faker = require('faker');
 const fs = require('fs');
-import pgdb from './db/index.js';
+const loremHipsum = require('lorem-hipsum');
+const pgdb = require('./db/index.js');
 
 let dataList = [];
 
@@ -33,6 +34,7 @@ let fileNameSerial = 0;
 
 for (let i = 0; i <= entryQty; i++) {
   let albumData = {};
+  console.log(i);
 
   albumData.albumID = i;
   albumData.comments = makeComments();
@@ -43,19 +45,20 @@ for (let i = 0; i <= entryQty; i++) {
 
     fileNameSerial++;
     let notifySerial = fileNameSerial;
-    console.log(`writing file ${notifySerial}...`)
+    console.log(`writing batch ${notifySerial}...`)
 
     // fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
 
-
-
-    console.log(`saved file ${notifySerial}`);
-    dataList = [];
+    pgdb.insertData(dataList, (err, results) => {
+      if (err) {
+        console.log(`batch ${notifySerial} error on json object ${results}. *Error*: `, err);
+      }
+    })
 
   } else if (i == entryQty) {
     fileNameSerial++;
     let notifySerial = fileNameSerial;
-    console.log(`writing file ${notifySerial}...`);
+    console.log(`writing batch ${notifySerial}...`);
 
     fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList), (err) => {
       if (err) {
