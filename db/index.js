@@ -1,3 +1,5 @@
+import { SSL_OP_TLS_BLOCK_PADDING_BUG } from 'constants';
+
 const pg = require('pg');
 const fs = require('fs');
 const pool = new pg.Pool({
@@ -6,27 +8,34 @@ const pool = new pg.Pool({
   database: 'testdb'
 });
 
-const jsonObj = JSON.stringify({
-  name: 'dale cooper',
-  role: 'special agent',
-  age: 33,
-  interests: ['coffee', 'tape recorders', 'Tibetan forensic meditation']
-})
+// const jsonObj = JSON.stringify({
+//   name: 'dale cooper',
+//   role: 'special agent',
+//   age: 33,
+//   interests: ['coffee', 'tape recorders', 'Tibetan forensic meditation']
+// })
 
-const testLoadQuery = `INSERT INTO testtable(data) VALUES ('${jsonObj}')`;
+const insertData = (dataArr, callback) => {
 
-pool.query(testLoadQuery, (err, results) => {
-  if (err) {
-    console.log(`db query error: `, err);
-  } else {
-    console.log(`db query successful! Results: `, results.rows);
+  for (let i = 0; i < dataArr.length; i++) {
+    let jsonObj = JSON.stringify(dataArr[i]);
+    const testLoadQuery = `INSERT INTO testtable(data) VALUES ('${jsonObj}')`;
+
+    pool.query(testLoadQuery, (err, results) => {
+      if (err) {
+        console.log(`db query error: `, err);
+        callback(err, null);
+      } else {
+        console.log(`db query successful! Results: `, results);
+        callback(null, results);
+      }
+    })
   }
 
   pool.end();
-})
+}
 
-
-
+export default insertData;
 /*
   === Plan to implement DB insert within data gen script, while maintaining modularity ===
 

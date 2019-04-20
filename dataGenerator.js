@@ -1,7 +1,6 @@
 const faker = require('faker');
 const fs = require('fs');
-// const bson = require('bson');
-// const loremHipsum = require('lorem-hipsum');
+import pgdb from './db/index.js';
 
 let dataList = [];
 
@@ -46,7 +45,9 @@ for (let i = 0; i <= entryQty; i++) {
     let notifySerial = fileNameSerial;
     console.log(`writing file ${notifySerial}...`)
 
-    fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
+    // fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
+
+
 
     console.log(`saved file ${notifySerial}`);
     dataList = [];
