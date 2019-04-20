@@ -6,19 +6,45 @@ const pool = new pg.Pool({
   database: 'testdb'
 });
 
+// module.exports.insertData = (dataArr, callback) => {
+
+//   for (let i = 0; i < dataArr.length; i++) {
+//     let jsonObj = JSON.stringify(dataArr[i]);
+
+//     const testLoadQuery = 'INSERT INTO testtable(data) VALUES ($1)';
+
+//     pool.query(testLoadQuery, [jsonObj], (err, results) => {
+//       if (err) {
+//         callback(err, jsonObj);
+//       }
+//     })
+//   }
+// }
+
 module.exports.insertData = (dataArr, callback) => {
 
+  const valuesArray = [];
+  const paramsArray = [];
+
   for (let i = 0; i < dataArr.length; i++) {
+    // for query string: need a string that looks like '($0), ($1), ...' with a param for every item in array
+    valuesArray.push(`($${i+1})`);
+    // for actual params array: need an array of json objects for the numbered query string params to map to
     let jsonObj = JSON.stringify(dataArr[i]);
+    console.log(`adding json obj #${i} to the query builder`)
+    paramsArray.push(jsonObj);
 
-    const testLoadQuery = 'INSERT INTO testtable(data) VALUES ($1)';
+  }
+  const valuesString = valuesArray.join(',  ');
+  const testLoadQuery = `INSERT INTO testtable(data) VALUES ${valuesString}`;
 
-    pool.query(testLoadQuery, [jsonObj], (err, results) => {
+    pool.query(testLoadQuery, paramsArray, (err, results) => {
       if (err) {
-        callback(err, jsonObj);
+        callback(err, null);
+      } else {
+        callback(null, results);
       }
     })
-  }
 }
 /*
   === Plan to implement DB insert within data gen script, while maintaining modularity ===

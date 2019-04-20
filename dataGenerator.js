@@ -51,7 +51,10 @@ for (let i = 0; i <= entryQty; i++) {
 
     pgdb.insertData(dataList, (err, results) => {
       if (err) {
-        console.log(`batch ${notifySerial} error on json object ${results}. *Error*: `, err);
+        console.log(`batch ${notifySerial} error: `, err);
+      } else {
+        console.log(`batch ${notifySerial} success!: `, results)
+        dataList = [];
       }
     })
 
@@ -60,13 +63,14 @@ for (let i = 0; i <= entryQty; i++) {
     let notifySerial = fileNameSerial;
     console.log(`writing batch ${notifySerial}...`);
 
-    fs.writeFile(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList), (err) => {
+    pgdb.insertData(dataList, (err, results) => {
       if (err) {
-        console.log(err);
+        console.log(`batch ${notifySerial} error on json object ${results}. *Error*: `, err);
       } else {
-        console.log(`saved file ${notifySerial}`);
+        console.log(`batch ${notifySerial} success!: `, results)
+        dataList = [];
       }
-    });
+    })
   }
 }
 
