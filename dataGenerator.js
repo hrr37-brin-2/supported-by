@@ -3,6 +3,7 @@ const fs = require('fs');
 const loremHipsum = require('lorem-hipsum');
 const pgdb = require('./db/index.js');
 
+console.time('timing data gen and seed');
 let dataList = [];
 
 //number of entries to generate -- defaults to 100k if not provided as arg
@@ -34,7 +35,6 @@ let fileNameSerial = 0;
 
 for (let i = 0; i <= entryQty; i++) {
   let albumData = {};
-  console.log(i);
 
   albumData.albumID = i;
   albumData.comments = makeComments();
@@ -54,9 +54,10 @@ for (let i = 0; i <= entryQty; i++) {
         console.log(`batch ${notifySerial} error: `, err);
       } else {
         console.log(`batch ${notifySerial} success!: `, results)
-        dataList = [];
       }
     })
+
+    dataList = [];
 
   } else if (i == entryQty) {
     fileNameSerial++;
@@ -68,7 +69,7 @@ for (let i = 0; i <= entryQty; i++) {
         console.log(`batch ${notifySerial} error on json object ${results}. *Error*: `, err);
       } else {
         console.log(`batch ${notifySerial} success!: `, results)
-        dataList = [];
+        pgdb.pool.end();
       }
     })
   }
