@@ -24,7 +24,10 @@ Displays user album reviews and avatars
 
 ## Usage
 
-`npm run gen-data [num of entries] [entries per file]` will generate the specified number of entries and store in .json files, batching entries in separate files at quantity specified. Per-file quantities > 100k are not recommended. Calling `npm run gen-data` defaults to 100k entries with 10k entries per file.
+`npm run gen-data [num of entries] [entries per batch] [save method]`
+- `[num of entries]` specifies how many JSON object entries will be created
+- `[entries per batch]` specifies how many entries will be included in each batch
+- `[save method]` accepts the args `fs` (file system) or `pg` (postgres), and will save generated data either as .json files to the /data directory, or to the postgres database, respectively
 
 ## Requirements
 

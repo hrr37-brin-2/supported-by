@@ -10,7 +10,7 @@ console.time('duration data gen and seed');
 const entryQty = process.argv[2] || 100000;
 
 // number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
-let entriesPerFile = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
+let entriesPerBatch = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
 
 // where to save data -- database or file system
 let saveDataTo = 'pg';
@@ -22,7 +22,7 @@ if (process.argv[4] == 'fs') {
 
 // handle large data sets for postgres, where query bound to params list caps out at ~30k params
 if (saveDataTo == 'pg' && entryQty > 100000) {
-  entriesPerFile = 30000;
+  entriesPerBatch = 30000;
 }
 //======= COMMENT BUILDER HELPER FUNCTION =======//
 const makeComments = () => {
@@ -58,7 +58,7 @@ const generateData = async () => {
 
       dataList.push(albumData);
 
-      if (i !==0 && i % entriesPerFile === 0 || i == entryQty) { // if i is a multiple of entriesPerFile
+      if (i !==0 && i % entriesPerBatch === 0 || i == entryQty) { // if i is a multiple of entriesPerBatch
         fileNameSerial++;
         let notifySerial = fileNameSerial;
 

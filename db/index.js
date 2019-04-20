@@ -10,9 +10,7 @@ module.exports.insertData = async (dataArr) => {
   const paramsArray = [];
 
   for (let i = 0; i < dataArr.length; i++) {
-    // for query string: need a string that looks like '($0), ($1), ...' with a param for every item in array
     valuesArray.push(`($${i+1})`);
-    // for actual params array: need an array of json objects for the numbered query string params to map to
     let jsonObj = JSON.stringify(dataArr[i]);
     paramsArray.push(jsonObj);
   }
