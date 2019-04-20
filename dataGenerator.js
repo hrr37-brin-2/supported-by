@@ -50,7 +50,7 @@ const generateData = async () => {
   let dataList = [];
   let fileNameSerial = 0;
 
-  for (let i = 0; i <= entryQty; i++) {
+  for (let i = 1; i <= entryQty; i++) {
       let albumData = {};
 
       albumData.albumID = i;
