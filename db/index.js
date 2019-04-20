@@ -34,13 +34,8 @@ module.exports.insertData = (dataArr, callback) => {
   const valuesString = valuesArray.join(',  ');
   const testLoadQuery = `INSERT INTO testtable(data) VALUES ${valuesString}`;
 
-  pool.query(testLoadQuery, paramsArray, (err, results) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, results);
-    }
-  })
+  return pool.query(testLoadQuery, paramsArray)
+    .then(response => response.rowCount);
 }
 
 module.exports.pool = pool;

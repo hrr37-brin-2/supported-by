@@ -48,13 +48,7 @@ for (let i = 0; i <= entryQty; i++) {
 
       // fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
 
-      await pgdb.insertData(dataList, (err, results) => {
-        if (err) {
-          console.log(`batch ${notifySerial} error: `, err);
-        } else {
-          console.log(`batch ${notifySerial} success!: `, results)
-        }
-      })
+      await pgdb.insertData(dataList);
 
       dataList = [];
     }
