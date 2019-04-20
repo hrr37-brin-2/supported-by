@@ -3,7 +3,7 @@ const fs = require('fs');
 const loremHipsum = require('lorem-hipsum');
 const pgdb = require('./db/index.js');
 
-console.time('timing data gen and seed');
+console.time('duration data gen and seed');
 
 const makeComments = () => {
   const comments = [];
@@ -54,6 +54,7 @@ const generateData = async () => {
         dataList = [];
       }
     }
+    console.timeEnd('duration data gen and seed');
 }
 
 generateData();
