@@ -4,12 +4,6 @@ const loremHipsum = require('lorem-hipsum');
 const pgdb = require('./db/index.js');
 
 console.time('timing data gen and seed');
-let dataList = [];
-
-//number of entries to generate -- defaults to 100k if not provided as arg
-const entryQty = process.argv[2] || 100000;
-// number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
-const entriesPerFile = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
 
 const makeComments = () => {
   const comments = [];
@@ -31,36 +25,43 @@ const makeComments = () => {
   return comments;
 }
 
+const generateData = async () => {
+  //number of entries to generate -- defaults to 100k if not provided as arg
+const entryQty = process.argv[2] || 100000;
+// number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
+const entriesPerFile = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
+let dataList = [];
 let fileNameSerial = 0;
 
 for (let i = 0; i <= entryQty; i++) {
-  let albumData = {};
+    let albumData = {};
 
-  albumData.albumID = i;
-  albumData.comments = makeComments();
+    albumData.albumID = i;
+    albumData.comments = makeComments();
 
-  dataList.push(albumData);
+    dataList.push(albumData);
 
-  if (i !==0 && i % entriesPerFile === 0 || i == entryQty) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
+    if (i !==0 && i % entriesPerFile === 0 || i == entryQty) { // if i is a multiple of entriesPerFile
+      fileNameSerial++;
+      let notifySerial = fileNameSerial;
+      console.log(`writing batch ${notifySerial}...`)
 
-    fileNameSerial++;
-    let notifySerial = fileNameSerial;
-    console.log(`writing batch ${notifySerial}...`)
+      // fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
 
-    // fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
+      await pgdb.insertData(dataList, (err, results) => {
+        if (err) {
+          console.log(`batch ${notifySerial} error: `, err);
+        } else {
+          console.log(`batch ${notifySerial} success!: `, results)
+        }
+      })
 
-    pgdb.insertData(dataList, (err, results) => {
-      if (err) {
-        console.log(`batch ${notifySerial} error: `, err);
-      } else {
-        console.log(`batch ${notifySerial} success!: `, results)
-      }
-    })
-
-    dataList = [];
-
+      dataList = [];
+    }
   }
 }
+
+generateData();
 
 // iterate 'qty' times
 // when iterator == threshold (provided via arg), save file and increment filename counter
