@@ -41,7 +41,7 @@ for (let i = 0; i <= entryQty; i++) {
 
   dataList.push(albumData);
 
-  if (i !==0 && i % entriesPerFile === 0) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
+  if (i !==0 && i % entriesPerFile === 0 || i == entryQty) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
 
     fileNameSerial++;
     let notifySerial = fileNameSerial;
@@ -59,19 +59,6 @@ for (let i = 0; i <= entryQty; i++) {
 
     dataList = [];
 
-  } else if (i == entryQty) {
-    fileNameSerial++;
-    let notifySerial = fileNameSerial;
-    console.log(`writing batch ${notifySerial}...`);
-
-    pgdb.insertData(dataList, (err, results) => {
-      if (err) {
-        console.log(`batch ${notifySerial} error on json object ${results}. *Error*: `, err);
-      } else {
-        console.log(`batch ${notifySerial} success!: `, results)
-        pgdb.pool.end();
-      }
-    })
   }
 }
 
