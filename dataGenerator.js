@@ -10,18 +10,12 @@ const entryQty = process.argv[2] || 100000;
 // number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
 const entriesPerFile = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
 
-let fileNameSerial = 0;
-
-for (let i = 0; i <= entryQty; i++) {
-  let albumData = {};
-
-  albumData.albumID = i;
-  let commentCount = Math.floor(Math.random() * 10);
-
-  albumData.comments = [];
+const makeComments = () => {
+  const comments = [];
+  const commentCount = Math.floor(Math.random() * 10);
 
   for (let x = 0; x < commentCount; x++) {
-    let comment = {};
+    const comment = {};
     comment.username = faker.name.findName();
     comment.avatar = faker.image.cats();
     comment.text = loremHipsum({
@@ -31,13 +25,23 @@ for (let i = 0; i <= entryQty; i++) {
       sentenceUpperBound: 8,
       format: 'plain'
     })
-
-    albumData.comments.push(comment);
+    comments.push(comment);
   }
+  return comments;
+}
+
+let fileNameSerial = 0;
+
+for (let i = 0; i <= entryQty; i++) {
+  let albumData = {};
+
+  albumData.albumID = i;
+  albumData.comments = makeComments();
 
   dataList.push(albumData);
 
   if (i !==0 && i % entriesPerFile === 0) { // if i is a multiple of entriesPerFile (10, 20, 30, 40)
+
     fileNameSerial++;
     let notifySerial = fileNameSerial;
     console.log(`writing file ${notifySerial}...`)
