@@ -20,7 +20,7 @@ const pool = new pg.Pool({
 //   }
 // }
 
-module.exports.insertData = (dataArr, callback) => {
+module.exports.insertData = async (dataArr) => {
   const valuesArray = [];
   const paramsArray = [];
 
@@ -34,8 +34,10 @@ module.exports.insertData = (dataArr, callback) => {
   const valuesString = valuesArray.join(',  ');
   const testLoadQuery = `INSERT INTO testtable(data) VALUES ${valuesString}`;
 
-  return pool.query(testLoadQuery, paramsArray)
+  const response = await pool.query(testLoadQuery, paramsArray)
     .then(response => response.rowCount);
+
+  return response;
 }
 
 module.exports.pool = pool;

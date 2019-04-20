@@ -27,32 +27,33 @@ const makeComments = () => {
 
 const generateData = async () => {
   //number of entries to generate -- defaults to 100k if not provided as arg
-const entryQty = process.argv[2] || 100000;
-// number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
-const entriesPerFile = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
-let dataList = [];
-let fileNameSerial = 0;
+  const entryQty = process.argv[2] || 100000;
+  // number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
+  const entriesPerFile = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
+  let dataList = [];
+  let fileNameSerial = 0;
 
-for (let i = 0; i <= entryQty; i++) {
-    let albumData = {};
+  for (let i = 0; i <= entryQty; i++) {
+      let albumData = {};
 
-    albumData.albumID = i;
-    albumData.comments = makeComments();
+      albumData.albumID = i;
+      albumData.comments = makeComments();
 
-    dataList.push(albumData);
+      dataList.push(albumData);
 
-    if (i !==0 && i % entriesPerFile === 0 || i == entryQty) { // if i is a multiple of entriesPerFile
-      fileNameSerial++;
-      let notifySerial = fileNameSerial;
-      console.log(`writing batch ${notifySerial}...`)
+      if (i !==0 && i % entriesPerFile === 0 || i == entryQty) { // if i is a multiple of entriesPerFile
+        fileNameSerial++;
+        let notifySerial = fileNameSerial;
 
-      // fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
+        console.log(`writing batch ${notifySerial}...`)
 
-      await pgdb.insertData(dataList);
+        const response = await pgdb.insertData(dataList);
 
-      dataList = [];
+        console.log(`batch ${notifySerial} complete! Rows written: `, response);
+
+        dataList = [];
+      }
     }
-  }
 }
 
 generateData();
