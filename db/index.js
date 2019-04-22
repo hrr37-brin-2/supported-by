@@ -47,8 +47,8 @@ module.exports.addEntry = async (comments) => {
 
 module.exports.updateEntryByID = async(id, comments) => {
   console.log(`processing updateEntryByID query for id ${id}`)
-  const queryString = ``;
-  const response = await pool.query(/*TODO */);
+  const queryString = `UPDATE testtable SET data = $1 WHERE id = $2`;
+  const response = await pool.query(queryString, [comments, id]);
   return response;
 }
 

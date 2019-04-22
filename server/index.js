@@ -32,15 +32,15 @@ app.post('/support', async (req, res) => {
   res.json(response);
 })
 
-app.put('/support/:id', (req, res) => {
-  let albumId = req.params.id;
-
+app.put('/support/:id', async (req, res) => {
+  const albumId = req.params.id;
+  const commentsData = JSON.stringify(req.body);
   //TODO: implement db access
-
-  res.send(`PUT request received for id ${albumId}, thanks`);
+  const response = await db.updateEntryByID(albumId, commentsData);
+  res.json(response);
 })
 
-app.delete('/support/:id', (req, res) => {
+app.delete('/support/:id', async (req, res) => {
   let albumId = req.params.id;
 
   //TODO: implement db access
