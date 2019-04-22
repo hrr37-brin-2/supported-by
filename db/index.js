@@ -40,8 +40,8 @@ module.exports.deleteEntryByID = async (id) => {
 
 module.exports.addEntry = async (comments) => {
   console.log(`processing addEntry query`)
-  const queryString = ``;
-  const response = await pool.query(/*TODO */);
+  const queryString = `INSERT INTO testtable(data) VALUES ($1)`;
+  const response = await pool.query(queryString, [comments]);
   return response;
 }
 

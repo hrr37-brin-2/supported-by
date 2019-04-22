@@ -23,16 +23,13 @@ app.use('/:id', express.static(__dirname + '/../client/dist'));
 app.get('/support/:id', async (req, res) => {
   const albumId = req.params.id;
   const response = await db.getEntryByID(albumId);
-
   res.json(response);
-
 });
 
-app.post('/support/:id', (req, res) => {
-  let albumId = req.params.id;
-  //TODO: implement db access
-
-  res.send(`POST request received for id ${albumId}, thanks`);
+app.post('/support', async (req, res) => {
+  const commentsData = JSON.stringify(req.body);
+  const response = await db.addEntry(commentsData)
+  res.json(response);
 })
 
 app.put('/support/:id', (req, res) => {
