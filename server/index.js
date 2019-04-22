@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const User = require('../database/index.js');
+// const User = require('../database/index.js');
 const PORT = 3003;
+const db = require('../db/index.js');
 
 app.use(cors());
 app.use(bodyParser.urlencoded());
@@ -19,28 +20,12 @@ app.use((req, res, next) => {
 app.use('/', express.static(__dirname + '/../client/dist/'))
 app.use('/:id', express.static(__dirname + '/../client/dist'));
 
+app.get('/support/:id', async (req, res) => {
+  const albumId = req.params.id;
+  const response = await db.getEntryByID(albumId);
 
-// app.get('/api/users/:id', (req, res) => {
-//   let id = req.params.id;
-//   User.getUser(id, (err, user) => {
-//     if(err) {
-//       console.log(err);
-//     } else {
-//       res.json(user);
-//     }
-//   });
-// });
+  res.json(response);
 
-app.get('/support/:id', (req, res) => {
-  let albumId = req.params.id;
-
-  User.getUsersForAlbum(albumId, (err, albumUsers) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(albumUsers);
-    }
-  });
 });
 
 app.post('/support/:id', (req, res) => {

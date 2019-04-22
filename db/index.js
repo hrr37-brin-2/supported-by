@@ -49,12 +49,12 @@ module.exports.updateEntry = async(id, comments) => {
 }
 
 // test query
-(async () => {
-  const response = await module.exports.deleteEntryByID(28);
-  console.log(JSON.stringify(response));
-  pool.end();
-  console.timeEnd('query took');
-})();
+// (async () => {
+//   const response = await module.exports.deleteEntryByID(28);
+//   console.log(JSON.stringify(response));
+//   pool.end();
+//   console.timeEnd('query took');
+// })();
 
 module.exports.endPool = () => {
   pool.end();
