@@ -5,7 +5,7 @@ const pool = new pg.Pool({
   database: 'testdb'
 });
 
-console.time('query took: ');
+console.time('query took');
 module.exports.insertData = async (dataArr) => {
   const valuesArray = [];
   const paramsArray = [];
@@ -24,20 +24,37 @@ module.exports.insertData = async (dataArr) => {
   return response;
 }
 
-module.exports.getEntryByID = async (id = 100) => {
+module.exports.getEntryByID = async (id) => {
   const queryString = `SELECT data FROM testtable WHERE id = $1`;
-
   const response = await pool.query(queryString, [id])
-
   return response;
 }
 
-// (async () => {
-//   const response = await module.exports.getEntryByID();
-//   console.log(JSON.stringify(response.rows[0].data));
-//   pool.end();
-//   console.timeEnd('query took: ');
-// })();
+module.exports.deleteEntryByID = async (id) => {
+  const queryString = `DELETE FROM testtable WHERE id = $1`;
+  const response = await pool.query(queryString, [id]);
+  return response;
+}
+
+module.exports.addEntry = async (comments) => {
+  const queryString = ``;
+  const response = await pool.query(/*TODO */);
+  return response;
+}
+
+module.exports.updateEntry = async(id, comments) => {
+  const queryString = ``;
+  const response = await pool.query(/*TODO */);
+  return response;
+}
+
+// test query
+(async () => {
+  const response = await module.exports.deleteEntryByID(28);
+  console.log(JSON.stringify(response));
+  pool.end();
+  console.timeEnd('query took');
+})();
 
 module.exports.endPool = () => {
   pool.end();
