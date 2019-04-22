@@ -5,6 +5,7 @@ const pool = new pg.Pool({
   database: 'testdb'
 });
 
+console.time('query took: ');
 module.exports.insertData = async (dataArr) => {
   const valuesArray = [];
   const paramsArray = [];
@@ -21,4 +22,23 @@ module.exports.insertData = async (dataArr) => {
     .then(response => response.rowCount);
 
   return response;
+}
+
+module.exports.getEntryByID = async (id = 100) => {
+  const queryString = `SELECT data FROM testtable WHERE id = $1`;
+
+  const response = await pool.query(queryString, [id])
+
+  return response;
+}
+
+// (async () => {
+//   const response = await module.exports.getEntryByID();
+//   console.log(JSON.stringify(response.rows[0].data));
+//   pool.end();
+//   console.timeEnd('query took: ');
+// })();
+
+module.exports.endPool = () => {
+  pool.end();
 }
