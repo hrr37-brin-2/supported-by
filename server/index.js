@@ -42,10 +42,8 @@ app.put('/support/:id', async (req, res) => {
 
 app.delete('/support/:id', async (req, res) => {
   let albumId = req.params.id;
-
-  //TODO: implement db access
-
-  res.send(`DELETE request received for id ${albumId}, thanks`)
+  const response = await db.deleteEntryByID(albumId);
+  res.json(response);
 })
 
 
