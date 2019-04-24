@@ -4,7 +4,7 @@ const loremHipsum = require('lorem-hipsum');
 const pgdb = require('./db/index.js');
 const cass = require('./db/indexCass.js');
 
-console.time('duration data gen and seed');
+console.time('duration of data gen and seed');
 
 //======= OPTION SETUP =======//
 //number of entries to generate -- defaults to 100k if not provided as arg
@@ -96,7 +96,7 @@ const generateData = async () => {
     }
     pgdb.endPool();
     cass.shutdown();
-    console.timeEnd('duration data gen and seed');
+    console.timeEnd('duration of data gen and seed');
 }
 
 generateData();
