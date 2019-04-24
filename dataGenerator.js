@@ -76,6 +76,7 @@ const generateData = async () => {
         dataList = [];
       }
     }
+    pgdb.endPool();
     console.timeEnd('duration data gen and seed');
 }
 
