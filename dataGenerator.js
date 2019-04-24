@@ -7,7 +7,6 @@ const cass = require('./db/indexCass.js');
 console.time('duration of data gen and seed');
 
 //======= OPTION SETUP =======//
-//number of entries to generate -- defaults to 100k if not provided as arg
 const entryQty = process.argv[2] || 100000;
 
 //#region save method (a database or the file system)
@@ -38,10 +37,6 @@ if (saveDataTo == 'cass') {
 }
 //#endregion
 
-// handle large data sets for postgres, where query bound to params list caps out at ~30k params
-if (saveDataTo == 'pg' && entryQty > 100000) {
-  entriesPerBatch = 30000;
-}
 //======= COMMENT BUILDER HELPER FUNCTION =======//
 const makeComments = () => {
   const comments = [];
