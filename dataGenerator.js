@@ -31,7 +31,7 @@ if (saveDataTo == 'cass') {
   }
 } else if (saveDataTo == 'fs') {
   if (entryQty <= 1000000) {
-    entriesPerbatch = Math.floor(entryQty/10);
+    entriesPerBatch = Math.floor(entryQty/10);
   } else {
     entriesPerBatch = 100000;
   }
