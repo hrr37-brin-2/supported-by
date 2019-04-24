@@ -2,6 +2,7 @@ const faker = require('faker');
 const fs = require('fs');
 const loremHipsum = require('lorem-hipsum');
 const pgdb = require('./db/index.js');
+const cass = require('./db/indexCass.js');
 
 console.time('duration data gen and seed');
 
@@ -18,6 +19,8 @@ if (process.argv[4] == 'fs') {
   saveDataTo = 'fs';
 } else if (process.argv[4] == 'cass') {
   saveDataTo = 'cass';
+  entriesPerBatch = 5;
+  //TODO: refactor entire 'entriesPerBatch' handling process--for testing, it was convenient to supply this value as an argument. But now that I know the optimal batch sizes for fs vs. pg vs. cassandra at varying entry quantities, it makes more sense to calculate the optimal batch size in the code rather than ask the user to supply it
 }
 
 // handle large data sets for postgres, where query bound to params list caps out at ~30k params
@@ -70,13 +73,14 @@ const generateData = async () => {
           fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
           console.log(`file ${fileNameSerial} written!`);
         } else if (saveDataTo == 'cass') {
-          //TODO: write cassandra db insert
+          const response = await cass.insertData(dataList);
         }
 
         dataList = [];
       }
     }
     pgdb.endPool();
+    cass.shutdown();
     console.timeEnd('duration data gen and seed');
 }
 
