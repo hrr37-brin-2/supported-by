@@ -10,23 +10,14 @@ console.time('duration data gen and seed');
 //number of entries to generate -- defaults to 100k if not provided as arg
 const entryQty = process.argv[2] || 100000;
 
-// number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
-let entriesPerBatch = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
-
-//ENTRIES PER BATCH:
-// - always use 5 for cassandra
-// - for fs, ePB should never exceed 100k
-// - for pg, ePB should never exceed 30k
-//
-
-// where to save data -- database or file system
-let saveDataTo = 'pg';
-if (process.argv[4] == 'fs') {
+//#region save method (a database or the file system)
+let saveDataTo;
+if (process.argv[3] == 'fs' || process.argv[3] == 'pg' || process.argv[3] == 'cass') {
+  saveDataTo = process.argv[3];
+} else {
   saveDataTo = 'fs';
-} else if (process.argv[4] == 'cass') {
-  saveDataTo = 'cass';
-  entriesPerBatch = 5;
 }
+//#endregion
 
 //#region batch calculation
 let entriesPerBatch;
