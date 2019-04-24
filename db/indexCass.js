@@ -2,7 +2,7 @@ const cassandra = require('cassandra-driver');
 
 const client = new cassandra.Client({
   contactPoints: ['127.0.0.1'],
-  keyspace: 'testyboi',
+  keyspace: 'bandland',
   localDataCenter: 'datacenter1'
 })
 
@@ -11,6 +11,14 @@ module.exports.shutdown = () => {
 }
 
 module.exports.insertData = async (dataArr) => {
+  const makeTableQuery = `CREATE TABLE IF NOT EXISTS albumdata (albumid INT, comments TEXT, PRIMARY KEY (albumid))`;
+
+  client.execute(makeTableQuery, (err, res) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+
   try {
     const queries = dataArr.map((entry) => {
       return {
@@ -24,16 +32,3 @@ module.exports.insertData = async (dataArr) => {
     console.log('error in cassandra DB insert: ', e);
   }
 }
-
-/*
-const queries = [
-  {
-    query: 'UPDATE user_profiles SET email=? WHERE key=?',
-    params: [ emailAddress, 'hendrix' ]
-  },
-  {
-    query: 'INSERT INTO user_track (key, text, date) VALUES (?, ?, ?)',
-    params: [ 'hendrix', 'Changed email', new Date() ]
-  }
-];
-*/
