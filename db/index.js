@@ -1,10 +1,12 @@
 const pg = require('pg');
 const pool = new pg.Pool({
-  user: 'brox',
+  user: 'brox', // should be a superuser on your local postgres setup
   host:'127.0.0.1',
-  database: 'testdb'
+  database: 'postgres'
 });
 
+const makeTableQuery = `CREATE TABLE IF NOT EXISTS albumdata (id SERIAL PRIMARY KEY, data JSON NOT NULL)`
+pool.query(makeTableQuery);
 
 module.exports.insertData = async (dataArr) => {
   const valuesArray = [];
@@ -16,7 +18,7 @@ module.exports.insertData = async (dataArr) => {
     paramsArray.push(jsonObj);
   }
   const valuesString = valuesArray.join(',  ');
-  const testLoadQuery = `INSERT INTO testtable(data) VALUES ${valuesString}`;
+  const testLoadQuery = `INSERT INTO albumdata(data) VALUES ${valuesString}`;
 
   const response = await pool.query(testLoadQuery, paramsArray)
     .then(response => response.rowCount);
@@ -26,28 +28,28 @@ module.exports.insertData = async (dataArr) => {
 
 module.exports.getEntryByID = async (id) => {
   console.log(`processing getEntryByID query for id ${id}`)
-  const queryString = `SELECT data FROM testtable WHERE id = $1`;
+  const queryString = `SELECT data FROM albumdata WHERE id = $1`;
   const response = await pool.query(queryString, [id])
   return response;
 }
 
 module.exports.deleteEntryByID = async (id) => {
   console.log(`processing deleteEntryByID query for id ${id}`)
-  const queryString = `DELETE FROM testtable WHERE id = $1`;
+  const queryString = `DELETE FROM albumdata WHERE id = $1`;
   const response = await pool.query(queryString, [id]);
   return response;
 }
 
 module.exports.addEntry = async (comments) => {
   console.log(`processing addEntry query`)
-  const queryString = `INSERT INTO testtable(data) VALUES ($1)`;
+  const queryString = `INSERT INTO albumdata(data) VALUES ($1)`;
   const response = await pool.query(queryString, [comments]);
   return response;
 }
 
 module.exports.updateEntryByID = async(id, comments) => {
   console.log(`processing updateEntryByID query for id ${id}`)
-  const queryString = `UPDATE testtable SET data = $1 WHERE id = $2`;
+  const queryString = `UPDATE albumdata SET data = $1 WHERE id = $2`;
   const response = await pool.query(queryString, [comments, id]);
   return response;
 }
