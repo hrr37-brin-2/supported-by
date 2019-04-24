@@ -6,6 +6,10 @@ const client = new cassandra.Client({
   localDataCenter: 'datacenter1'
 })
 
+module.exports.shutdown = () => {
+  client.shutdown();
+}
+
 module.exports.insertData = async (dataArr) => {
   try {
     const queries = dataArr.map((entry) => {

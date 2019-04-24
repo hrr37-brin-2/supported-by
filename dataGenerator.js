@@ -19,6 +19,8 @@ if (process.argv[4] == 'fs') {
   saveDataTo = 'fs';
 } else if (process.argv[4] == 'cass') {
   saveDataTo = 'cass';
+  entriesPerBatch = 5;
+  //TODO: refactor entire 'entriesPerBatch' handling process--for testing, it was convenient to supply this value as an argument. But now that I know the optimal batch sizes for fs vs. pg vs. cassandra at varying entry quantities, it makes more sense to calculate the optimal batch size in the code rather than ask the user to supply it
 }
 
 // handle large data sets for postgres, where query bound to params list caps out at ~30k params
@@ -72,13 +74,13 @@ const generateData = async () => {
           console.log(`file ${fileNameSerial} written!`);
         } else if (saveDataTo == 'cass') {
           const response = await cass.insertData(dataList);
-          console.log(`batch ${fileNameSerial} complete!: `, response);
         }
 
         dataList = [];
       }
     }
     pgdb.endPool();
+    cass.shutdown();
     console.timeEnd('duration data gen and seed');
 }
 
