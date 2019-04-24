@@ -29,6 +29,6 @@ module.exports.insertData = async (dataArr) => {
     const response = await client.batch(queries, {prepare: true});
     return response;
   } catch(e) {
-    console.log('error in cassandra DB insert: ', e);
+    console.log('error during Cassandra db insert: ', e);
   }
 }
