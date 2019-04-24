@@ -13,6 +13,12 @@ const entryQty = process.argv[2] || 100000;
 // number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
 let entriesPerBatch = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
 
+//ENTRIES PER BATCH:
+// - always use 5 for cassandra
+// - for fs, ePB should never exceed 100k
+// - for pg, ePB should never exceed 30k
+//
+
 // where to save data -- database or file system
 let saveDataTo = 'pg';
 if (process.argv[4] == 'fs') {
@@ -20,8 +26,26 @@ if (process.argv[4] == 'fs') {
 } else if (process.argv[4] == 'cass') {
   saveDataTo = 'cass';
   entriesPerBatch = 5;
-  //TODO: refactor entire 'entriesPerBatch' handling process--for testing, it was convenient to supply this value as an argument. But now that I know the optimal batch sizes for fs vs. pg vs. cassandra at varying entry quantities, it makes more sense to calculate the optimal batch size in the code rather than ask the user to supply it
 }
+
+//#region batch calculation
+let entriesPerBatch;
+if (saveDataTo == 'cass') {
+  entriesPerBatch = 5;
+} else if (saveDataTo == 'pg'){
+  if (entryQty <= 30000) {
+    entriesPerBatch = Math.floor(entryQty/10);
+  } else {
+    entriesPerBatch = 30000;
+  }
+} else if (saveDataTo == 'fs') {
+  if (entryQty <= 1000000) {
+    entriesPerbatch = Math.floor(entryQty/10);
+  } else {
+    entriesPerBatch = 100000;
+  }
+}
+//#endregion
 
 // handle large data sets for postgres, where query bound to params list caps out at ~30k params
 if (saveDataTo == 'pg' && entryQty > 100000) {
