@@ -2,6 +2,7 @@ const faker = require('faker');
 const fs = require('fs');
 const loremHipsum = require('lorem-hipsum');
 const pgdb = require('./db/index.js');
+const cass = require('./db/indexCass.js');
 
 console.time('duration data gen and seed');
 
@@ -70,7 +71,8 @@ const generateData = async () => {
           fs.writeFileSync(`./data/testData${fileNameSerial}.json`, JSON.stringify(dataList));
           console.log(`file ${fileNameSerial} written!`);
         } else if (saveDataTo == 'cass') {
-          //TODO: write cassandra db insert
+          const response = await cass.insertData(dataList);
+          console.log(`batch ${fileNameSerial} complete!: `, response);
         }
 
         dataList = [];

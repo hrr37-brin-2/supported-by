@@ -5,7 +5,7 @@ const client = new cassandra.Client({
   keyspace: 'testyboi'
 })
 
-const insertData = async (dataArr) => {
+module.exports.insertData = async (dataArr) => {
   try {
     const queries = dataArr.map((entry) => {
       return {
