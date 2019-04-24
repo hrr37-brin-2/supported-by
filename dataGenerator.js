@@ -4,29 +4,39 @@ const loremHipsum = require('lorem-hipsum');
 const pgdb = require('./db/index.js');
 const cass = require('./db/indexCass.js');
 
-console.time('duration data gen and seed');
+console.time('duration of data gen and seed');
 
 //======= OPTION SETUP =======//
-//number of entries to generate -- defaults to 100k if not provided as arg
 const entryQty = process.argv[2] || 100000;
 
-// number of entries per file -- defaults to 10k, or 1/10th of total entries if total is < 100k
-let entriesPerBatch = process.argv[3] || (entryQty >= 100000 ? 10000 : Math.floor(entryQty/10));
-
-// where to save data -- database or file system
-let saveDataTo = 'pg';
-if (process.argv[4] == 'fs') {
+//#region save method (a database or the file system)
+let saveDataTo;
+if (process.argv[3] == 'fs' || process.argv[3] == 'pg' || process.argv[3] == 'cass') {
+  saveDataTo = process.argv[3];
+} else {
   saveDataTo = 'fs';
-} else if (process.argv[4] == 'cass') {
-  saveDataTo = 'cass';
-  entriesPerBatch = 5;
-  //TODO: refactor entire 'entriesPerBatch' handling process--for testing, it was convenient to supply this value as an argument. But now that I know the optimal batch sizes for fs vs. pg vs. cassandra at varying entry quantities, it makes more sense to calculate the optimal batch size in the code rather than ask the user to supply it
 }
+//#endregion
 
-// handle large data sets for postgres, where query bound to params list caps out at ~30k params
-if (saveDataTo == 'pg' && entryQty > 100000) {
-  entriesPerBatch = 30000;
+//#region batch calculation
+let entriesPerBatch;
+if (saveDataTo == 'cass') {
+  entriesPerBatch = 5;
+} else if (saveDataTo == 'pg'){
+  if (entryQty <= 30000) {
+    entriesPerBatch = Math.floor(entryQty/10);
+  } else {
+    entriesPerBatch = 30000;
+  }
+} else if (saveDataTo == 'fs') {
+  if (entryQty <= 1000000) {
+    entriesPerBatch = Math.floor(entryQty/10);
+  } else {
+    entriesPerBatch = 100000;
+  }
 }
+//#endregion
+
 //======= COMMENT BUILDER HELPER FUNCTION =======//
 const makeComments = () => {
   const comments = [];
@@ -81,7 +91,7 @@ const generateData = async () => {
     }
     pgdb.endPool();
     cass.shutdown();
-    console.timeEnd('duration data gen and seed');
+    console.timeEnd('duration of data gen and seed');
 }
 
 generateData();

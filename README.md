@@ -24,10 +24,9 @@ Displays user album reviews and avatars
 
 ## Usage
 
-`npm run gen-data [num of entries] [entries per batch] [save method]`
+`npm run gen-data [num of entries] [save method]`
 - `[num of entries]` specifies how many JSON object entries will be created
-- `[entries per batch]` specifies how many entries will be included in each batch
-- `[save method]` accepts the args `fs` (file system) or `pg` (postgres), and will save generated data either as .json files to the /data directory, or to the postgres database, respectively
+- `[save method]` accepts the args `fs` (file system), `pg` (postgres), or `cass` (cassandra), and will instruct script to save generated data either as .json files to the `/data` directory, or to the appropriate local database.
 
 ## Requirements
 
