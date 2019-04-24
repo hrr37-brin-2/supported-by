@@ -5,13 +5,14 @@ const pool = new pg.Pool({
   database: 'postgres'
 });
 
-const makeTableQuery = `CREATE TABLE IF NOT EXISTS albumdata (id SERIAL PRIMARY KEY, data JSON NOT NULL)`
-pool.query(makeTableQuery);
-
 module.exports.insertData = async (dataArr) => {
+
   try {
     const valuesArray = [];
     const paramsArray = [];
+
+    const makeTableQuery = `CREATE TABLE IF NOT EXISTS albumdata (id SERIAL PRIMARY KEY, data JSON NOT NULL)`
+    const makeTableResult = await pool.query(makeTableQuery);
 
     for (let i = 0; i < dataArr.length; i++) {
       valuesArray.push(`($${i+1})`);
