@@ -7,7 +7,7 @@ class SupportSection extends React.Component {
     super(props);
 
     this.state = {
-      users: []
+      comments: []
     };
 
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -24,9 +24,10 @@ class SupportSection extends React.Component {
     .then(response => {
       return response.json();
     })
-    .then(users => {
+    .then(albumData => {
+      console.log(albumData);
       this.setState({
-        users: users
+        comments: albumData.rows[0].data.comments
       });
     });
   }
@@ -34,8 +35,8 @@ class SupportSection extends React.Component {
   render() {
     return (
       <div className="supportSection">
-        <CommentList users={this.state.users}/>
-        <UserPhotoGrid users={this.state.users}/>
+        <CommentList comments={this.state.comments}/>
+        <UserPhotoGrid comments={this.state.comments}/>
       </div>
     );
   }

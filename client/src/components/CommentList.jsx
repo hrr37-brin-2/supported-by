@@ -21,12 +21,12 @@ class CommentList extends React.Component {
     return (
       <div>
         <p className="supportedBy">supported by</p>
-        {this.props.users.slice(0, this.state.numberOfComments).map(user => {
+        {this.props.comments.slice(0, this.state.numberOfComments).map(comment => {
           return (
-            <Comment user={user} key={user.id}/>
+            <Comment comment={comment}/>
           );
         })}
-        {(this.state.numberOfComments <= this.props.users.length) && <p onClick={() => this.onShowMore()} className="more">more...</p>}
+        {(this.state.numberOfComments <= this.props.comments.length) && <p onClick={() => this.onShowMore()} className="more">more...</p>}
       </div>
     );
   }

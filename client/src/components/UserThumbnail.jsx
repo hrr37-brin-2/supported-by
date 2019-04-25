@@ -9,10 +9,10 @@ class UserThumbnail extends React.Component {
     return (
       <a className="thumbnail">
         <span>
-          <img src={this.props.user.profileImageURL} height="100px" width="100px"></img>
-          {this.props.user.username}
+          <img src={this.props.avatar} height="100px" width="100px"></img>
+          {this.props.user}
         </span>
-        <img src={this.props.user.profileImageURL} height ="26px" width="26px"></img>
+        <img src={this.props.avatar} height ="26px" width="26px"></img>
       </a>
     );
   }

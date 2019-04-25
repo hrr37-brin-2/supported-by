@@ -9,9 +9,9 @@ class UserPhotoGrid extends React.Component {
   render() {
     return (
       <div className="thumbnails">
-      {this.props.users.map(user => {
+      {this.props.comments.map(comment => {
         return (
-          <UserThumbnail user={user} key={user.id}/>
+          <UserThumbnail avatar={comment.avatar} user={comment.username}/>
         )
       })}
       </div>

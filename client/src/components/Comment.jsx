@@ -9,11 +9,11 @@ class Comment extends React.Component {
     return (
       <div className="commentBlock">
         <div className="pic">
-          <img src={this.props.user.profileImageURL} height="28" width="28"></img>
+          <img src={this.props.comment.avatar} height="28" width="28"></img>
         </div>
         <div className="words comment">
-          <a className="username" href="">{this.props.user.username}</a>
-          {this.props.user.comment}
+          <a className="username" href="">{this.props.comment.username}</a>
+          {this.props.comment.text}
         </div>
       </div>
     );
