@@ -1,35 +1,167 @@
 config:
   target: 'http://localhost:3003'
   phases:
-    - duration: 5
-      arrivalRate: 10
+    - duration: 60
+      arrivalRate: 100
   defaults:
     headers:
       x-my-service-auth: '987401838271002188298567'
+  processor: './incrementID.js'
 scenarios:
   - flow:
-    - get:
-        url: "/support/4999999"
-    - get:
-        url: "/support/333"
-    - get:
-        url: "/support/9999999"
-    - get:
-        url: "/support/9999977"
-    - get:
-        url: "/support/9999000"
-    - get:
-        url: "/support/9999989"
-    - get:
-        url: "/support/9999799"
-    - get:
-        url: "/support/9999899"
-    - get:
-        url: "/support/9999998"
-    - get:
-        url: "/support/9939999"
-    - get:
-        url: "/support/9994999"
+    - function: 'getID'
+    - loop:
+        - get:
+            url: "/support/{{ ID }}"
+      count: 1
+
+
+
+
+    # - get:
+    #     url: "/support/4999999"
+    # - get:
+    #     url: "/support/333"
+    # - get:
+    #     url: "/support/9999999"
+    # - get:
+    #     url: "/support/9999977"
+    # - get:
+    #     url: "/support/9999000"
+    # - get:
+    #     url: "/support/9999989"
+    # - get:
+    #     url: "/support/9999799"
+    # - get:
+    #     url: "/support/9999899"
+    # - get:
+    #     url: "/support/9999998"
+    # - get:
+    #     url: "/support/9938888"
+    # - get:
+    #     url: "/support/8894889"
+    # - get:
+    #     url: "/support/8899989"
+    # - get:
+    #     url: "/support/9861799"
+    # - get:
+    #     url: "/support/8619899"
+    # - get:
+    #     url: "/support/9333398"
+    # - get:
+    #     url: "/support/9933333"
+    # - get:
+    #     url: "/support/7794009"
+    # - get:
+    #     url: "/support/8894919"
+    # - get:
+    #     url: "/support/9177989"
+    # - get:
+    #     url: "/support/9861701"
+    # - get:
+    #     url: "/support/8619801"
+    # - get:
+    #     url: "/support/9332398"
+    # - get:
+    #     url: "/support/9932333"
+    # - get:
+    #     url: "/support/9014009"
+    # - get:
+    #     url: "/support/4999991"
+    # - get:
+    #     url: "/support/331"
+    # - get:
+    #     url: "/support/9999991"
+    # - get:
+    #     url: "/support/9999971"
+    # - get:
+    #     url: "/support/9999001"
+    # - get:
+    #     url: "/support/9999981"
+    # - get:
+    #     url: "/support/9999791"
+    # - get:
+    #     url: "/support/9999891"
+    # - get:
+    #     url: "/support/9999991"
+    # - get:
+    #     url: "/support/9938881"
+    # - get:
+    #     url: "/support/8894881"
+    # - get:
+    #     url: "/support/8899981"
+    # - get:
+    #     url: "/support/9861791"
+    # - get:
+    #     url: "/support/8619891"
+    # - get:
+    #     url: "/support/9333391"
+    # - get:
+    #     url: "/support/9933331"
+    # - get:
+    #     url: "/support/7794001"
+    # - get:
+    #     url: "/support/8894911"
+    # - get:
+    #     url: "/support/9177981"
+    # - get:
+    #     url: "/support/9861702"
+    # - get:
+    #     url: "/support/8619802"
+    # - get:
+    #     url: "/support/9332392"
+    # - get:
+    #     url: "/support/9932335"
+    # - get:
+    #     url: "/support/9014002"
+    # - get:
+    #     url: "/support/9999998"
+    # - get:
+    #     url: "/support/9999997"
+    #  - get:
+    #     url: "/support/9999996"
+    # - get:
+    #     url: "/support/9999995"
+    #  - get:
+    #     url: "/support/9999994"
+    # - get:
+    #     url: "/support/9999993"
+    # - get:
+    #     url: "/support/9999992"
+    # - get:
+    #     url: "/support/9999991"
+    #  - get:
+    #     url: "/support/9999990"
+    # - get:
+    #     url: "/support/9999989"
+    #  - get:
+    #     url: "/support/9999988"
+    # - get:
+    #     url: "/support/9999987"
+    # - get:
+    #     url: "/support/9999986"
+    # - get:
+    #     url: "/support/9999985"
+    #  - get:
+    #     url: "/support/9999984"
+    # - get:
+    #     url: "/support/9999983"
+    #  - get:
+    #     url: "/support/9999982"
+    # - get:
+    #     url: "/support/9999981"
+    # - get:
+    #     url: "/support/9999980"
+    # - get:
+    #     url: "/support/9999979"
+    #  - get:
+    #     url: "/support/9999978"
+    # - get:
+    #     url: "/support/9999977"
+    #  - get:
+    #     url: "/support/9999976"
+    # - get:
+    #     url: "/support/111"
     # - post:
     #     url: "/support/"
     #     json: {
