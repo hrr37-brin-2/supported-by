@@ -1,5 +1,4 @@
 const pg = require('pg');
-require('dotenv').config();
 const pool = new pg.Pool({
   user: process.env.PG_EC2_USER, // should be a superuser on your local postgres setup
   port: 5432,
@@ -7,6 +6,7 @@ const pool = new pg.Pool({
   host: process.env.PG_EC2_HOST,
   database: 'bandland'
 });
+
 
 module.exports.insertData = async (dataArr) => {
 
