@@ -20,7 +20,7 @@ class SupportSection extends React.Component {
       endpoint = "/1";
     }
 
-    fetch(`http://localhost:3003/support${endpoint}`)
+    fetch(`/support${endpoint}`)
     .then(response => {
       return response.json();
     })

@@ -1,0 +1,41 @@
+config:
+  target: 'http://localhost:3003'
+  phases:
+    - duration: 30
+      arrivalRate: 1000
+  http:
+    pool: 5
+  defaults:
+    headers:
+      x-my-service-auth: '987401838271002188298567'
+  processor: './incrementID.js'
+scenarios:
+  - flow:
+    - function: 'getID'
+    - loop:
+        - get:
+            url: "/support/{{ ID }}"
+      count: 1
+   - flow:
+      - post:
+            url: "/support/"
+            json: {
+                    "albumID": 0000,
+                    "comments": [
+                        {
+                            "username": "Chagil Guiab",
+                            "avatar": "http://lorempixel.com/640/480/cats",
+                            "text": "Retro crucifix Pitchfork next level. Cray tousled tattooed meggings 8-bit disrupt 3 wolf moon occupy."
+                        },
+                        {
+                            "username": "M Brock Ross III",
+                            "avatar": "http://lorempixel.com/640/480/cats",
+                            "text": "Skateboard next level crucifix swag next level cray. Chambray bitters sriracha."
+                        },
+                        {
+                            "username": "Derrick Brandon PhD",
+                            "avatar": "http://lorempixel.com/640/480/cats",
+                            "text": "Williamsburg hoodie hashtag XOXO hashtag post-ironic selfies flannel. Aesthetic messenger bag kitsch lomo cornhole."
+                        }
+                    ]
+                }
