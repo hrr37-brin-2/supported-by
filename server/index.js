@@ -28,6 +28,7 @@ app.get('/support/:id', async (req, res) => {
 
   const albumId = req.params.id;
   const response = await db.getEntryByID(albumId);
+  db.endPool();
 
   res.json(response);
 });
@@ -36,6 +37,7 @@ app.post('/support', async (req, res) => {
 
   const commentsData = JSON.stringify(req.body);
   const response = await db.addEntry(commentsData)
+  db.endPool();
 
   res.json(response);
 })
@@ -45,6 +47,7 @@ app.put('/support/:id', async (req, res) => {
   const albumId = req.params.id;
   const commentsData = JSON.stringify(req.body);
   const response = await db.updateEntryByID(albumId, commentsData);
+  db.endPool();
 
   res.json(response);
 })
@@ -53,6 +56,7 @@ app.delete('/support/:id', async (req, res) => {
 
   let albumId = req.params.id;
   const response = await db.deleteEntryByID(albumId);
+  db.endPool();
 
   res.json(response);
 })
