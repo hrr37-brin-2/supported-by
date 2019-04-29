@@ -19,8 +19,10 @@ app.use(bodyParser.json());
 //   next();
 // })
 
+app.use('/bundle/', express.static(__dirname + '/../client/dist/bundle.js'));
 app.use('/', express.static(__dirname + '/../client/dist/'))
 app.use('/:id', express.static(__dirname + '/../client/dist'));
+
 
 app.get('/support/:id', async (req, res) => {
 
