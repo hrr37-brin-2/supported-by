@@ -12,7 +12,6 @@ const pool = new pg.Pool({
 //   database: 'postgres'
 // });
 
-
 module.exports.insertData = async (dataArr) => {
 
   try {
