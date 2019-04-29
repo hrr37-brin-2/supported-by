@@ -1,16 +1,16 @@
 const pg = require('pg');
-// const pool = new pg.Pool({
-//   user: process.env.PG_EC2_USER, // should be a superuser on your local postgres setup
-//   port: 5432,
-//   password: process.env.PG_EC2_PW,
-//   host: process.env.PG_EC2_HOST,
-//   database: 'bandland'
-// });
 const pool = new pg.Pool({
-  user: 'brox', // should be a superuser on your local postgres setup
-  host: '127.0.0.1',
-  database: 'postgres'
+  user: process.env.PG_EC2_USER, // should be a superuser on your local postgres setup
+  port: 5432,
+  password: process.env.PG_EC2_PW,
+  host: process.env.PG_EC2_HOST,
+  database: 'bandland'
 });
+// const pool = new pg.Pool({
+//   user: 'brox', // should be a superuser on your local postgres setup
+//   host: '127.0.0.1',
+//   database: 'postgres'
+// });
 
 
 module.exports.insertData = async (dataArr) => {
