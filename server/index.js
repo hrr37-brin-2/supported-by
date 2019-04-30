@@ -25,36 +25,48 @@ app.use('/:id', express.static(__dirname + '/../client/dist'));
 
 
 app.get('/support/:id', async (req, res) => {
-  console.log(process.env.TEST_VAR);
-  const albumId = req.params.id;
-  const response = await db.getEntryByID(albumId);
+  try {
+    const albumId = req.params.id;
+    const response = await db.getEntryByID(albumId);
 
-  res.json(response);
+    res.json(response);
+  } catch(e) {
+    res.send('error in GET request: ', e);
+  }
 });
 
 app.post('/support', async (req, res) => {
+  try {
+    const commentsData = JSON.stringify(req.body);
+    const response = await db.addEntry(commentsData);
 
-  const commentsData = JSON.stringify(req.body);
-  const response = await db.addEntry(commentsData);
-
-  res.json(response);
+    res.json(response);
+  } catch(e) {
+    res.send('error in POST request: ', e);
+  }
 })
 
 app.put('/support/:id', async (req, res) => {
-
+  try {
   const albumId = req.params.id;
   const commentsData = JSON.stringify(req.body);
   const response = await db.updateEntryByID(albumId, commentsData);
 
   res.json(response);
+  } catch(e) {
+    res.send('error in PUT request: ', e);
+  }
 })
 
 app.delete('/support/:id', async (req, res) => {
+  try {
+    let albumId = req.params.id;
+    const response = await db.deleteEntryByID(albumId);
 
-  let albumId = req.params.id;
-  const response = await db.deleteEntryByID(albumId);
-
-  res.json(response);
+    res.json(response);
+  } catch(e) {
+    res.send('error in DELETE request: ', e);
+  }
 })
 
 
