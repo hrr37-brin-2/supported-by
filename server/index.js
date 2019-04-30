@@ -25,7 +25,7 @@ app.use('/:id', express.static(__dirname + '/../client/dist'));
 
 
 app.get('/support/:id', async (req, res) => {
-
+  console.log(process.env.TEST_VAR);
   const albumId = req.params.id;
   const response = await db.getEntryByID(albumId);
 
