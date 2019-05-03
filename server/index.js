@@ -1,4 +1,4 @@
-require('newrelic');
+//require('newrelic');
 require('dotenv').config();
 const express = require('express');
 const app = express();
@@ -7,6 +7,7 @@ const cors = require('cors');
 // const User = require('../database/index.js');
 const PORT = 3000;
 const db = require('../db/index.js');
+const path = require('path');
 
 app.use(cors());
 app.use(bodyParser.urlencoded());
@@ -19,9 +20,19 @@ app.use(bodyParser.json());
 //   next();
 // })
 
-app.use('/bundle/', express.static(__dirname + '/../client/dist/bundle.js'));
+app.get('/loaderio-2a71553008d06e3bb59932ed4dd2629b/', (req, res) => {
+  res.sendFile(path.join(__dirname + '/loaderio.txt'));
+})
+
+app.get('/bundle', (req, res) => {
+  res.setHeader("Content-Encoding", "gzip");
+  res.sendFile(path.resolve('client/dist/bundle.js.gz'))
+})
+
+//app.use('/bundle/', express.static(__dirname + '/../client/dist/bundle.js'));
 app.use('/', express.static(__dirname + '/../client/dist/'))
 app.use('/:id', express.static(__dirname + '/../client/dist'));
+
 
 
 app.get('/support/:id', async (req, res) => {

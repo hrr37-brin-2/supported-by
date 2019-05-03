@@ -9,7 +9,7 @@
   },
   "scripts": {
     "gen-data": "node --max-old-space-size=8192 dataGenerator.js",
-    "react-dev": "webpack -d --watch",
+    "build": "webpack -p",
     "seed": "mongoimport --db bandland --collection users --file userData.json --jsonArray",
     "start": "node server/index.js",
     "test": "jest --verbose",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "body-parser": "^1.18.3",
+    "brotli-gzip-webpack-plugin": "^0.5.0",
     "bson": "^4.0.2",
     "cassandra-driver": "^4.0.0",
     "cors": "^2.8.5",
@@ -27,7 +28,7 @@
     "jquery": "^3.3.1",
     "lorem-hipsum": "^0.1.7",
     "mongoose": "^5.4.20",
-    "newrelic": "^5.7.0",
+    "path": "^0.12.7",
     "pg": "^7.10.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
