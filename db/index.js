@@ -13,7 +13,6 @@ const pool = new pg.Pool({
 // });
 
 module.exports.insertData = async (dataArr) => {
-
   try {
     const valuesArray = [];
     const paramsArray = [];
@@ -39,6 +38,7 @@ module.exports.insertData = async (dataArr) => {
 }
 
 module.exports.getEntryByID = async (id) => {
+  console.log(process.env.PG_EC2_USER, process.env.PG_EC2_HOST);
   try {
     console.log(`processing getEntryByID query for id ${id}`)
     const queryString = `SELECT data FROM albumdata WHERE id = $1`;
@@ -48,6 +48,7 @@ module.exports.getEntryByID = async (id) => {
     console.log(`error getting entry at id ${id}: `, e)
   }
 }
+
 
 module.exports.deleteEntryByID = async (id) => {
   try {
